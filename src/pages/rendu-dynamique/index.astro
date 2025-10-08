@@ -1,0 +1,64 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import penguins from "../../assets/penguins.json";
+
+// Générer automatiquement la liste des espèces
+const species = [...new Set(penguins.map((p) => p.species))].sort();
+---
+
+<Layout>
+  <h1>Espèces de Pingouins</h1>
+  <p>Sélectionnez une espèce pour voir son graphique :</p>
+  
+  <ul>
+    {
+      species.map((s) => (
+        <li>
+          <a href={`/rendu-dynamique/${s}`}>Espèce : {s}</a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <style>
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    
+    p {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    li {
+      margin: 1rem 0;
+      background: #f8f9fa;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    
+    li:hover {
+      background: #e9ecef;
+    }
+    
+    a {
+      display: block;
+      padding: 1rem;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 500;
+    }
+    
+    a:hover {
+      color: #0056b3;
+    }
+  </style>
+</Layout>

@@ -1,0 +1,52 @@
+---
+import penguins from "../../assets/penguins.json";
+export const prerender = false;
+import PlotFigure from "../../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+const { species } = Astro.params;
+
+const filteredPenguins = penguins.filter((penguin) => penguin.species === species);
+
+const plotOptions = {
+  grid: true,
+  marks: [
+    Plot.dot(filteredPenguins, {
+      x: "culmen_length_mm",
+      y: "culmen_depth_mm",
+      fill: "steelblue",
+      r: 4,
+      fillOpacity: 0.7,
+    }),
+  ],
+  x: {
+    label: "Longueur du bec (mm)",
+  },
+  y: {
+    label: "Profondeur du bec (mm)",
+  },
+  title: `Relation Longueur vs Profondeur du bec - ${species}`,
+};
+---
+<h1>Pingouins de l'espece {species}</h1>
+<p>{filteredPenguins.length} pingouin(s) trouve(s) pour l'espece {species}</p>
+
+<PlotFigure options={plotOptions} />
+
+
+<a href="/rendu-dynamique" class="back-btn">Retour</a>
+
+<style>
+  .back-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  
+  .back-btn:hover {
+    background: #0056b3;
+  }
+</style>

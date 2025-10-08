@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+
+const species = [...new Set(penguins.map((p) => p.species))].sort();
+---
+
+<Layout>
+  <div class="slider">
+    {
+      species.map((s) => (
+        <div class="slide">
+          <h2>Espèce : {s}</h2>
+          <PlotFigure
+            options={{
+              marks: [
+                Plot.dot(penguins.filter(p => p.species === s), {
+                  x: "culmen_length_mm",
+                  y: "culmen_depth_mm",
+                  fill: "red",
+                }),
+              ],
+            }}
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <style>
+    .slider {
+      display: flex;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+    }
+
+    .slide {
+      min-width: 100vw;
+      scroll-snap-align: start;
+      text-align: center;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</Layout>
