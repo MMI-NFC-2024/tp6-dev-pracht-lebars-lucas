@@ -1,154 +1,49 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import PlotFigure from "../../components/PlotFigure.astro";
+import Layout from "../layouts/Layout.astro";
+import PlotFigure from "../components/PlotFigure.astro";
 import * as Plot from "@observablehq/plot";
-import cars from "../../assets/cars.json";
+import cars from "../assets/cars.json";
 
 const years = [...new Set(cars.map((c) => c.year))].sort();
 ---
 
 <Layout>
-  <div class="cars-header">
-    <h1>🚗 Slider Voitures par Année</h1>
-    <p>Glissez pour naviguer entre les années</p>
-  </div>
-
   <div class="slider">
     {
       years.map((y) => (
         <div class="slide">
-          <h2>Année {y}</h2>
+          <h2>Année : {y}</h2>
           <PlotFigure
             options={{
-              grid: true,
               marks: [
                 Plot.dot(cars.filter(c => c.year === y), {
                   x: "weight (lb)",
                   y: "power (hp)",
                   fill: "steelblue",
-                  r: 4,
-                  fillOpacity: 0.7,
                 }),
               ],
-              x: {
-                label: "Poids (lb)",
-              },
-              y: {
-                label: "Puissance (hp)",
-              },
-              title: `Relation Puissance vs Poids - Voitures ${y}`,
             }}
           />
-          <p class="car-count">{cars.filter(c => c.year === y).length} voitures en {y}</p>
         </div>
       ))
     }
   </div>
 
   <style>
-    .cars-header {
-      text-align: center;
-      margin-bottom: 2rem;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      max-width: 600px;
-      margin: 0 auto 2rem auto;
-    }
-
-    .cars-header h1 {
-      color: #333;
-      font-size: 2.5rem;
-      margin: 0 0 1rem 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .cars-header p {
-      color: #666;
-      font-size: 1.2rem;
-      margin: 0;
-    }
-
     .slider {
       display: flex;
       overflow-x: scroll;
       scroll-snap-type: x mandatory;
-      gap: 2rem;
-      padding: 0 2rem 2rem 2rem;
     }
 
     .slide {
       min-width: 100vw;
       scroll-snap-align: start;
+      text-align: center;
+      padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      margin: 0 1rem;
-    }
-
-    .slide h2 {
-      color: #333;
-      font-size: 2rem;
-      margin: 0 0 2rem 0;
-      text-align: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .car-count {
-      margin-top: 1rem;
-      color: #667eea;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
-    /* Scrollbar styling */
-    .slider::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .slider::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-    }
-
-    .slider::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 4px;
-    }
-
-    @media (max-width: 768px) {
-      .cars-header {
-        padding: 1.5rem;
-        margin: 0 1rem 2rem 1rem;
-      }
-
-      .cars-header h1 {
-        font-size: 2rem;
-      }
-
-      .slide {
-        padding: 1rem;
-        margin: 0 0.5rem;
-      }
-
-      .slide h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
     }
   </style>
 </Layout>
