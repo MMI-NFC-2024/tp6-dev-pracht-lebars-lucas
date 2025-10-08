@@ -1,0 +1,149 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import cars from "../../../assets/cars.json";
+import PlotFigure from "../../../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+
+export async function getStaticPaths() {
+  const years = [...new Set(cars.map((c) => c.year))];
+  
+  return years.map((y) => ({
+    params: { year: y.toString() },
+  }));
+}
+
+const { year } = Astro.params;
+
+// Filtrer les voitures pour l'année spécifiée
+const filteredCars = cars.filter((car) => car.year.toString() === year);
+
+// Configuration du graphique
+const plotOptions = {
+  grid: true,
+  marks: [
+    Plot.dot(filteredCars, {
+      x: "weight (lb)",
+      y: "power (hp)",
+      fill: "steelblue",
+      r: 4,
+      fillOpacity: 0.7,
+    }),
+  ],
+  x: {
+    label: "Poids (lb)",
+  },
+  y: {
+    label: "Puissance (hp)",
+  },
+  title: `Relation Puissance vs Poids - Voitures ${year}`,
+};
+---
+
+<Layout>
+  <div class="car-page">
+    <div class="car-header">
+      <h1>📊 Voitures de l'année {year}</h1>
+      <p class="car-count">{filteredCars.length} voiture(s) trouvée(s) pour l'année <strong>{year}</strong></p>
+      <span class="badge">Rendu Statique</span>
+    </div>
+
+    <div class="plot-container">
+      <PlotFigure options={plotOptions} />
+    </div>
+
+    <div class="navigation">
+      <a href="/cars/rendu-statique" class="back-btn">← Retour à la liste</a>
+    </div>
+  </div>
+
+  <style>
+    .car-page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .car-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .car-header h1 {
+      color: #333;
+      font-size: 2.5rem;
+      margin: 0 0 1rem 0;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .car-count {
+      color: #666;
+      font-size: 1.2rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .plot-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .navigation {
+      text-align: center;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+    }
+    
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(17, 153, 142, 0.6);
+    }
+
+    @media (max-width: 768px) {
+      .car-header {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .car-header h1 {
+        font-size: 2rem;
+      }
+
+      .plot-container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</Layout>

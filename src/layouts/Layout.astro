@@ -18,9 +18,22 @@ import "../styles/global.css";
           <h1 class="logo">🐧 Pingouins Analytics</h1>
           <ul class="nav-links">
             <li><a href="/" class="nav-item">🏠 Accueil</a></li>
-            <li><a href="/slider" class="nav-item">🎞️ Slider</a></li>
-            <li><a href="/rendu-dynamique" class="nav-item">⚡ Dynamique</a></li>
-            <li><a href="/rendu-statique" class="nav-item">📊 Statique</a></li>
+            <li class="dropdown">
+              <a href="#" class="nav-item">🐧 Pingouins ▼</a>
+              <div class="dropdown-content">
+                <a href="/slider">🎞️ Slider</a>
+                <a href="/rendu-dynamique">⚡ Dynamique</a>
+                <a href="/rendu-statique">📊 Statique</a>
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="nav-item">🚗 Voitures ▼</a>
+              <div class="dropdown-content">
+                <a href="/cars-slider">🎞️ Slider</a>
+                <a href="/cars/rendu-dynamique">⚡ Dynamique</a>
+                <a href="/cars/rendu-statique">📊 Statique</a>
+              </div>
+            </li>
           </ul>
         </div>
       </nav>
@@ -101,6 +114,60 @@ import "../styles/global.css";
     background: rgba(255,255,255,0.2);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeInUp 0.3s ease;
+  }
+
+  .dropdown-content a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 0;
+    background: transparent;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .dropdown-content a:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    transform: translateX(5px);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   main {
